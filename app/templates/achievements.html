@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Достижения — Бахонин Григорий{% endblock %}
+{% block container_class %}narrow{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <h1 class="page-title">Достижения</h1>
+  <p class="lead">Результаты олимпиад, проекты и текущий трек развития.</p>
+</section>
+
+<section class="achievements-list">
+  <article class="achievement-entry">
+    <div class="achievement-meta">2026</div>
+    <div class="achievement-body">
+      <h2>Призёр регионального этапа ВсОШ по информационной безопасности</h2>
+      <p>Занял призовое место на региональном этапе Всероссийской олимпиады школьников по направлению информационной безопасности. Решение задач по криптографии, реверс-инжинирингу, веб-безопасности, анализу сетевого трафика и администрированию.</p>
+      <div class="tags">
+        <span class="tag">всош-2026</span>
+        <span class="tag">информационная безопасность</span>
+        <span class="tag">ctf</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="achievement-entry">
+    <div class="achievement-meta">2026</div>
+    <div class="achievement-body">
+      <h2>Участник сборной Нижегородской области по информационной безопасности</h2>
+      <p>Отобран в сборную команду региона по информационной безопасности. Прохождение интенсивных тренировочных сборов, командных практик и соревнований.</p>
+      <div class="tags">
+        <span class="tag">сборная региона</span>
+        <span class="tag">сетевая безопасность</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="achievement-entry">
+    <div class="achievement-meta">2026</div>
+    <div class="achievement-body">
+      <h2>AI-Archivarius — Кейс для ИТ-кампуса «НЕЙМАРК»</h2>
+      <p>Разработал Telegram RAG-бота для интеллектуальной работы с документами (PDF/DOCX/TXT). Пайплайн чанкования и векторизации с Sentence-Transformers, изоляция контекста в ChromaDB по <code>user_id</code> и генерация ответов через Mistral AI. Проект для кейсового конкурса ИТ-кампуса «НЕЙМАРК».</p>
+      <div class="tags">
+        <span class="tag">python</span>
+        <span class="tag">aiogram 3</span>
+        <span class="tag">chromadb</span>
+        <span class="tag">mistral-ai</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="achievement-entry">
+    <div class="achievement-meta">2025–2026</div>
+    <div class="achievement-body">
+      <h2>Сканер уязвимостей веб-ресурсов & EGE-Platform</h2>
+      <p>Создал автоматический инструмент для сканирования веб-сайтов на уязвимости (SQLi, XSS), а также образовательную платформу EGE-Platform на стеке Flask + SQLite + SQLAlchemy + Vanilla JS.</p>
+      <div class="tags">
+        <span class="tag">python</span>
+        <span class="tag">flask</span>
+        <span class="tag">owasp</span>
+        <span class="tag">web-security</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="achievement-entry">
+    <div class="achievement-meta">2025–2026</div>
+    <div class="achievement-body">
+      <h2>Личный веб-сервис и практика DevOps</h2>
+      <p>Спроектировал сайт на Flask, упаковал в multi-stage Dockerfile с запуском от non-root пользователя, настроил GitHub Actions CI/CD пайплайн и панель администрирования для публикации заметок.</p>
+      <div class="tags">
+        <span class="tag">docker</span>
+        <span class="tag">ci/cd</span>
+        <span class="tag">github-actions</span>
+        <span class="tag">python</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="achievement-entry">
+    <div class="achievement-meta">Сейчас</div>
+    <div class="achievement-body">
+      <h2>Текущий трек: НГТУ им. Р.Е. Алексеева + НЕЙМАРК, DevSecOps</h2>
+      <p>Обучение на 1 курсе специалитета «Безопасность открытых информационных систем». Углубление в безопасность Kubernetes, интеграцию SAST/DAST проверок в CI/CD, инструменты мониторинга (Prometheus, Grafana, Loki) и поиск профильной стажировки.</p>
+    </div>
+  </article>
+</section>
+{% endblock %}

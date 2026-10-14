@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Вход — DevOps Notes{% endblock %}
+{% block container_class %}narrow{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+  <div class="auth-box">
+    <h1 class="auth-title">Вход в систему</h1>
+    <p class="auth-desc">Введите пароль для доступа к управлению дневником</p>
+
+    <form method="POST" action="{{ url_for('admin.login', next=request.args.get('next')) }}" class="auth-form">
+      <div class="form-group">
+        <label for="password" class="form-label">Пароль</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-control" 
+          required 
+          autofocus 
+          autocomplete="current-password"
+        >
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-block">Войти</button>
+      </div>
+    </form>
+
+    <div class="auth-footer">
+      <a href="{{ url_for('main.index') }}" class="back-link">← На главную</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

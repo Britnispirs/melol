@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}DevOps Notes{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <a href="{{ url_for('main.index') }}" class="logo">devops.notes</a>
+
+      <nav class="nav">
+        <a href="{{ url_for('main.index') }}" class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">Главная</a>
+        <a href="{{ url_for('main.diary') }}" class="nav-link {% if request.endpoint in ['main.diary', 'main.post'] and not request.path.startswith('/admin') %}active{% endif %}">Дневник</a>
+        <a href="{{ url_for('main.resume') }}" class="nav-link {% if request.endpoint == 'main.resume' %}active{% endif %}">Резюме</a>
+        <a href="{{ url_for('main.achievements') }}" class="nav-link {% if request.endpoint == 'main.achievements' %}active{% endif %}">Достижения</a>
+
+        {% if is_admin %}
+          <a href="{{ url_for('admin.index') }}" class="nav-link nav-admin-link {% if request.path.startswith('/admin') %}active{% endif %}">Админка</a>
+          <a href="{{ url_for('admin.logout') }}" class="nav-link nav-logout">Выйти</a>
+        {% else %}
+          <a href="{{ url_for('admin.login') }}" class="nav-link nav-login-link">Вход</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">
+              <span class="flash-text">{{ message }}</span>
+              <button class="flash-close" onclick="this.parentElement.remove()" aria-label="Закрыть">×</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <main class="main">
+    <div class="container {% block container_class %}{% endblock %}">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <p class="footer-title">devops.notes</p>
+        <p class="footer-subtitle">Бахонин Григорий · Инженерный дневник & портфолио</p>
+      </div>
+      <div class="footer-right">
+        {% if is_admin %}
+          <span class="footer-status">Режим администратора</span>
+          <a href="{{ url_for('admin.index') }}" class="footer-link">Управление</a>
+          <a href="{{ url_for('admin.logout') }}" class="footer-link">Выход</a>
+        {% else %}
+          <a href="{{ url_for('admin.login') }}" class="footer-link">Панель управления</a>
+        {% endif %}
+        <span class="footer-year">© {{ current_year }}</span>
+      </div>
+    </div>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

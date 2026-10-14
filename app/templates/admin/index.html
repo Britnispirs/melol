@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Панель управления — DevOps Notes{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+  <div class="page-header header-with-actions">
+    <div>
+      <h1 class="page-title">Управление записями</h1>
+      <p class="lead">Публикация, редактирование и удаление заметок в дневнике.</p>
+    </div>
+    <div class="admin-actions-bar">
+      <a href="{{ url_for('admin.new_post') }}" class="btn btn-primary">Новый пост</a>
+      <a href="{{ url_for('main.diary') }}" class="btn btn-secondary">В дневник</a>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="admin-stats-row">
+    <div class="stat-box">
+      <div class="stat-number">{{ total_posts }}</div>
+      <div class="stat-label">Всего записей</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">{{ total_tags }}</div>
+      <div class="stat-label">Использовано тегов</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">{{ latest_date }}</div>
+      <div class="stat-label">Последняя публикация</div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="admin-table-container">
+    {% if posts %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 130px;">Дата</th>
+            <th>Заголовок</th>
+            <th>Теги</th>
+            <th style="width: 170px;">Файл</th>
+            <th style="width: 220px; text-align: right;">Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in posts %}
+            <tr>
+              <td class="cell-mono">{{ post.date }}</td>
+              <td>
+                <a href="{{ url_for('main.post', slug=post.slug) }}" class="table-link" target="_blank">{{ post.title }}</a>
+              </td>
+              <td>
+                <div class="tags">
+                  {% for tag in post.tags %}
+                    <span class="tag">{{ tag }}</span>
+                  {% else %}
+                    <span class="text-muted">—</span>
+                  {% endfor %}
+                </div>
+              </td>
+              <td class="cell-mono cell-muted">{{ post.filename }}</td>
+              <td style="text-align: right;">
+                <div class="table-actions-inline">
+                  <a href="{{ url_for('main.post', slug=post.slug) }}" class="btn-table-action" target="_blank">Просмотр</a>
+                  <a href="{{ url_for('admin.edit_post', slug=post.slug) }}" class="btn-table-action">Правка</a>
+                  <form method="POST" action="{{ url_for('admin.delete_post_route', slug=post.slug) }}" style="display:inline;" onsubmit="return confirm('Удалить пост «{{ post.title }}»?');">
+                    <button type="submit" class="btn-table-action btn-table-danger">Удалить</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Записей в дневнике пока нет.</p>
+        <a href="{{ url_for('admin.new_post') }}" class="btn btn-primary">Создать первый пост</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

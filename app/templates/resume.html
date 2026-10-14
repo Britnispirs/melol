@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Резюме — Бахонин Григорий | Junior DevOps / DevSecOps{% endblock %}
+{% block container_class %}narrow{% endblock %}
+
+{% block content %}
+<article class="resume-document">
+  <!-- Header -->
+  <header class="resume-header">
+    <h1 class="resume-title">Бахонин Григорий</h1>
+    <div class="resume-role">Junior DevOps / DevSecOps · Информационная безопасность</div>
+    
+    <div class="resume-contacts-row">
+      <span class="contact-item">Нижний Новгород</span>
+      <span class="contact-sep">·</span>
+      <a href="mailto:shokershow3@gmail.com" class="contact-link">shokershow3@gmail.com</a>
+      <span class="contact-sep">·</span>
+      <a href="tel:+79524799055" class="contact-link">+7 952 479-90-55</a>
+      <span class="contact-sep">·</span>
+      <a href="https://github.com/Britnispirs" target="_blank" rel="noopener" class="contact-link">github.com/Britnispirs</a>
+    </div>
+  </header>
+
+  <!-- О себе -->
+  <section class="resume-section">
+    <h2 class="section-heading">О себе</h2>
+    <p class="section-text">
+      Студент 1 курса НГТУ им. Р.Е. Алексеева (направление 10.05.03 «Безопасность открытых информационных систем», программа совместно с Университетом НЕЙМАРК). 
+      Призёр регионального этапа ВсОШ по информационной безопасности 2026, участник сборной Нижегородской области. 
+      Активно изучаю DevOps-практики, администрирование Linux/Windows, контейнеризацию, CI/CD и инструменты мониторинга. 
+      Ищу стажировку, где смогу применять знания в реальных проектах и быстро расти.
+    </p>
+  </section>
+
+  <!-- Образование -->
+  <section class="resume-section">
+    <h2 class="section-heading">Образование</h2>
+    <div class="resume-entry">
+      <div class="entry-header">
+        <span class="entry-title">НГТУ им. Р.Е. Алексеева</span>
+        <span class="entry-date">2026 — настоящее время</span>
+      </div>
+      <div class="entry-subtitle">Специалитет 10.05.03 — «Безопасность открытых информационных систем»</div>
+      <p class="entry-desc">Совместная программа с Университетом НЕЙМАРК. 1 курс. Нижний Новгород.</p>
+    </div>
+  </section>
+
+  <!-- Достижения -->
+  <section class="resume-section">
+    <h2 class="section-heading">Достижения</h2>
+    <ul class="resume-list">
+      <li>
+        <strong>Призёр регионального этапа Всероссийской олимпиады школьников (ВсОШ) по информационной безопасности</strong> — 2026.
+      </li>
+      <li>
+        <strong>Участник сборной Нижегородской области по информационной безопасности</strong> — 2026.
+      </li>
+    </ul>
+  </section>
+
+  <!-- Навыки и технологии -->
+  <section class="resume-section">
+    <h2 class="section-heading">Навыки и технологии</h2>
+    <div class="skills-block">
+      <div class="skill-row">
+        <span class="skill-name">Администрирование:</span>
+        <span class="skill-desc">Linux (Ubuntu, CentOS) — установка, настройка, пользователи, права, systemd, сети; Windows Server / клиентские ОС — базовое администрирование, Active Directory (начальный уровень).</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Контейнеризация и облака:</span>
+        <span class="skill-desc">Docker — создание образов, docker-compose, volumes, networks; базовое понимание Kubernetes (поды, сервисы, деплойменты); знакомство с облачными концепциями (AWS / Yandex Cloud).</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">CI/CD и автоматизация:</span>
+        <span class="skill-desc">Git, GitHub, GitLab; основы CI/CD (GitHub Actions / GitLab CI); Bash-скриптинг; Ansible (начальный уровень).</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Мониторинг и observability:</span>
+        <span class="skill-desc">Prometheus + Grafana (базовая настройка); логирование (journalctl, rsyslog); знакомство с ELK / Loki.</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Информационная безопасность:</span>
+        <span class="skill-desc">Основы сетевой безопасности, firewall (ufw/iptables), SSH hardening; понимание уязвимостей (OWASP Top 10); участие в олимпиадах по ИБ; базовые навыки работы с инструментами анализа (nmap, wireshark и др.).</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Языки и прочее:</span>
+        <span class="skill-desc">Python (скрипты, автоматизация, Flask, aiogram); Bash; SQL (базовый); HTML/CSS/JS; Markdown, Git.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Проекты -->
+  <section class="resume-section">
+    <h2 class="section-heading">Проекты</h2>
+    
+    <div class="project-entry">
+      <div class="entry-header">
+        <span class="entry-title">AI-Archivarius — Telegram RAG-бот</span>
+        <span class="entry-tags">Python, aiogram 3, ChromaDB, Mistral AI</span>
+      </div>
+      <p class="entry-desc">
+        Умный Telegram-бот для работы с учебными материалами (PDF/DOCX/TXT). Реализовал полный RAG-пайплайн: парсинг документов, чанкование, векторизация (Sentence-Transformers), хранение в ChromaDB с изоляцией по <code>user_id</code>, генерация ответов через Mistral AI. Проект для кейсового конкурса ИТ-кампуса «НЕЙМАРК».
+      </p>
+    </div>
+
+    <div class="project-entry">
+      <div class="entry-header">
+        <span class="entry-title">Сканер уязвимостей веб-ресурсов</span>
+        <span class="entry-tags">Python, requests, BeautifulSoup</span>
+      </div>
+      <p class="entry-desc">
+        Автоматизированный инструмент для аудита безопасности веб-сайтов. Самостоятельно находит формы ввода, отправляет payload’ы (SQLi, XSS и др.), анализирует ответы сервера и выявляет уязвимости. Разработан в рамках подготовки к региональному этапу ВсОШ по информационной безопасности.
+      </p>
+    </div>
+
+    <div class="project-entry">
+      <div class="entry-header">
+        <span class="entry-title">EGE-Platform</span>
+        <span class="entry-tags">Python, Flask, SQLite, SQLAlchemy, JavaScript</span>
+      </div>
+      <p class="entry-desc">
+        Веб-платформа для подготовки к ЕГЭ по информатике и математике. Реализованы генератор пробников, база теории, интерактивная проверка ответов, тёмная тема, разграничение ролей (ученик/админ). Backend на Flask + SQLAlchemy, фронтенд — Jinja2 + Vanilla JS.
+      </p>
+    </div>
+
+    <div class="project-entry">
+      <div class="entry-header">
+        <span class="entry-title">Личный сайт & DevOps лаборатория</span>
+        <span class="entry-tags">Python, Flask, Docker multi-stage, GitHub Actions</span>
+      </div>
+      <p class="entry-desc">
+        Личный веб-сервис и база знаний с ведением инженерного дневника. Запуск в изолированном Docker-контейнере от непривилегированного пользователя, пайплайн сборки в GitHub Actions, защищенная панель управления для работы с Markdown-постами.
+      </p>
+    </div>
+
+    <div class="project-entry">
+      <div class="entry-header">
+        <span class="entry-title">Прочие проекты</span>
+        <span class="entry-tags"><a href="https://github.com/Britnispirs" target="_blank" rel="noopener">github.com/Britnispirs</a></span>
+      </div>
+      <p class="entry-desc">
+        Telegram-боты, небольшие веб-приложения, скрипты автоматизации. Активно веду репозитории и продолжаю развивать навыки.
+      </p>
+    </div>
+  </section>
+
+  <!-- Дополнительно -->
+  <section class="resume-section">
+    <h2 class="section-heading">Дополнительно</h2>
+    <ul class="resume-list">
+      <li><strong>Дата рождения:</strong> 25.07.2008 (18 лет).</li>
+      <li><strong>Языки:</strong> Русский — родной, Английский — A2 (чтение технической документации).</li>
+      <li><strong>Формат работы:</strong> Готовность к стажировке / частичной занятости / удалённой работе.</li>
+      <li><strong>Интересы:</strong> DevOps, DevSecOps, CTF, облачные технологии, автоматизация, информационная безопасность.</li>
+    </ul>
+  </section>
+</article>
+{% endblock %}

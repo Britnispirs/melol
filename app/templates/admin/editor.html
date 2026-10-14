@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if is_new %}Новый пост — DevOps Notes{% else %}Редактирование: {{ post.title }} — DevOps Notes{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="editor-page">
+  <div class="page-header">
+    <a href="{{ url_for('admin.index') }}" class="back-link">← Назад к списку записей</a>
+    <h1 class="page-title">
+      {% if is_new %}Создание поста{% else %}Редактирование поста{% endif %}
+    </h1>
+  </div>
+
+  <form method="POST" id="post-form" class="editor-form">
+    <div class="editor-layout">
+      <!-- Main Content -->
+      <div class="editor-main">
+        <div class="form-group">
+          <label for="post-title" class="form-label">Заголовок</label>
+          <input 
+            type="text" 
+            id="post-title" 
+            name="title" 
+            class="form-control form-control-title" 
+            placeholder="Заголовок заметки" 
+            value="{{ post.title }}" 
+            required 
+            autofocus
+          >
+        </div>
+
+        <div class="editor-workspace">
+          <div class="editor-tab-bar">
+            <div class="tab-group">
+              <button type="button" class="tab-button active" id="tab-write-btn" onclick="switchTab('write')">
+                Редактор
+              </button>
+              <button type="button" class="tab-button" id="tab-preview-btn" onclick="switchTab('preview')">
+                Предпросмотр
+              </button>
+            </div>
+            <span class="editor-key-hint">Ctrl + S для сохранения</span>
+          </div>
+
+          <!-- Markdown Toolbar -->
+          <div class="editor-toolbar" id="toolbar">
+            <button type="button" class="tool-btn" onclick="insertSyntax('## ', '')">H2</button>
+            <button type="button" class="tool-btn" onclick="insertSyntax('### ', '')">H3</button>
+            <button type="button" class="tool-btn" onclick="insertSyntax('**', '**')">Жирный</button>
+            <button type="button" class="tool-btn" onclick="insertSyntax('*', '*')">Курсив</button>
+            <button type="button" class="tool-btn" onclick="insertSyntax('`', '`')">Код</button>
+            <button type="button" class="tool-btn" onclick="insertSyntax('```bash\n', '\n```')">Блок кода</button>
+            <button type="button" class="tool-btn" onclick="insertSyntax('- ', '')">Список</button>
+            <button type="button" class="tool-btn" onclick="insertSyntax('> ', '')">Цитата</button>
+            <button type="button" class="tool-btn" onclick="insertSyntax('[', '](url)')">Ссылка</button>
+          </div>
+
+          <!-- Textarea Panel -->
+          <div id="panel-write" class="editor-pane active">
+            <textarea 
+              id="post-body" 
+              name="body" 
+              class="editor-textarea" 
+              placeholder="Текст публикации в формате Markdown..." 
+              required
+            >{{ post.body_raw }}</textarea>
+          </div>
+
+          <!-- Preview Panel -->
+          <div id="panel-preview" class="editor-pane preview-pane">
+            <div id="preview-loading" class="preview-loading" style="display: none;">Загрузка...</div>
+            <div id="preview-container" class="content preview-output"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="editor-sidebar">
+        <div class="sidebar-box">
+          <h3 class="sidebar-heading">Параметры</h3>
+
+          <div class="form-group">
+            <label for="post-date" class="form-label">Дата (YYYY-MM-DD)</label>
+            <input 
+              type="text" 
+              id="post-date" 
+              name="date" 
+              class="form-control" 
+              value="{{ post.date }}" 
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="post-slug" class="form-label">Слаг в URL</label>
+              <button type="button" class="btn-text-action" onclick="generateSlug()">Сгенерировать</button>
+            </div>
+            <input 
+              type="text" 
+              id="post-slug" 
+              name="slug" 
+              class="form-control" 
+              placeholder="post-slug" 
+              value="{{ post.slug }}"
+            >
+            <span class="field-hint">Имя файла: <code>YYYY-MM-DD-slug.md</code></span>
+          </div>
+
+          <div class="form-group">
+            <label for="post-tags" class="form-label">Теги (через запятую)</label>
+            <input 
+              type="text" 
+              id="post-tags" 
+              name="tags" 
+              class="form-control" 
+              placeholder="docker, k8s, devops" 
+              value="{{ post.tags_raw }}"
+            >
+          </div>
+
+          <div class="sidebar-actions">
+            <button type="submit" class="btn btn-primary btn-block">
+              {% if is_new %}Опубликовать{% else %}Сохранить изменения{% endif %}
+            </button>
+            <a href="{{ url_for('admin.index') }}" class="btn btn-secondary btn-block">Отмена</a>
+
+            {% if not is_new and original_slug %}
+              <button 
+                type="button" 
+                class="btn btn-danger btn-block" 
+                onclick="confirmDelete('{{ original_slug }}', '{{ post.title }}')"
+              >
+                Удалить пост
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </aside>
+    </div>
+  </form>
+
+  {% if not is_new and original_slug %}
+    <form id="delete-form" method="POST" action="{{ url_for('admin.delete_post_route', slug=original_slug) }}" style="display:none;"></form>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function switchTab(mode) {
+  const writeBtn = document.getElementById('tab-write-btn');
+  const previewBtn = document.getElementById('tab-preview-btn');
+  const panelWrite = document.getElementById('panel-write');
+  const panelPreview = document.getElementById('panel-preview');
+  const toolbar = document.getElementById('toolbar');
+
+  if (mode === 'preview') {
+    writeBtn.classList.remove('active');
+    previewBtn.classList.add('active');
+    panelWrite.classList.remove('active');
+    panelPreview.classList.add('active');
+    toolbar.style.display = 'none';
+    loadPreview();
+  } else {
+    previewBtn.classList.remove('active');
+    writeBtn.classList.add('active');
+    panelPreview.classList.remove('active');
+    panelWrite.classList.add('active');
+    toolbar.style.display = 'flex';
+  }
+}
+
+function loadPreview() {
+  const text = document.getElementById('post-body').value;
+  const container = document.getElementById('preview-container');
+  const loading = document.getElementById('preview-loading');
+
+  loading.style.display = 'block';
+
+  fetch("{{ url_for('admin.api_preview') }}", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ markdown: text })
+  })
+  .then(res => res.json())
+  .then(data => {
+    loading.style.display = 'none';
+    container.innerHTML = data.html || '<em>(Пусто)</em>';
+  })
+  .catch(() => {
+    loading.style.display = 'none';
+    container.innerHTML = '<p class="text-danger">Ошибка загрузки предпросмотра.</p>';
+  });
+}
+
+function insertSyntax(before, after) {
+  const textarea = document.getElementById('post-body');
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = textarea.value.substring(start, end);
+  const replacement = before + selectedText + after;
+  
+  textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+  textarea.focus();
+  textarea.selectionStart = start + before.length;
+  textarea.selectionEnd = start + before.length + selectedText.length;
+}
+
+function generateSlug() {
+  const title = document.getElementById('post-title').value;
+  if (!title) return;
+
+  fetch("{{ url_for('admin.api_slugify') }}", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: title })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.slug) {
+      document.getElementById('post-slug').value = data.slug;
+    }
+  });
+}
+
+document.getElementById('post-title').addEventListener('blur', function() {
+  const slugInput = document.getElementById('post-slug');
+  if (!slugInput.value.trim() && this.value.trim()) {
+    generateSlug();
+  }
+});
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    document.getElementById('post-form').submit();
+  }
+});
+
+function confirmDelete(slug, title) {
+  if (confirm(`Удалить запись «${title}»?`)) {
+    document.getElementById('delete-form').submit();
+  }
+}
+</script>
+{% endblock %}

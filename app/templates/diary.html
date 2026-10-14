@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Дневник — DevOps Notes{% endblock %}
+
+{% block content %}
+<section class="page-header header-with-actions">
+  <div>
+    <h1 class="page-title">Дневник</h1>
+    <p class="lead">Инженерные заметки по практике, настройке окружений и инфраструктуре.</p>
+  </div>
+  {% if is_admin %}
+    <div>
+      <a href="{{ url_for('admin.new_post') }}" class="btn btn-primary">Новый пост</a>
+    </div>
+  {% endif %}
+</section>
+
+<section class="posts-list">
+  {% if posts %}
+    {% for post in posts %}
+    <article class="post-item">
+      <div class="post-item-header">
+        <time class="meta-date" datetime="{{ post.date }}">{{ post.date_human }}</time>
+        {% if is_admin %}
+          <a href="{{ url_for('admin.edit_post', slug=post.slug) }}" class="link-edit">Редактировать</a>
+        {% endif %}
+      </div>
+
+      <h2 class="post-item-title">
+        <a href="{{ url_for('main.post', slug=post.slug) }}">{{ post.title }}</a>
+      </h2>
+
+      <p class="post-item-summary">{{ post.summary }}</p>
+
+      {% if post.tags %}
+      <div class="tags">
+        {% for tag in post.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </article>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <p>Записей пока нет.</p>
+      {% if is_admin %}
+        <a href="{{ url_for('admin.new_post') }}" class="btn btn-primary">Создать запись</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,1 @@
+# Nmap 7.98 scan initiated Mon Oct 12 13:26:45 2026 as: nmap -sV -sC -p- -oN nmap_full.txt 194.0.114.39
