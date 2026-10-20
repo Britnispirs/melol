@@ -22,10 +22,10 @@
         <a href="{{ url_for('main.achievements') }}" class="nav-link {% if request.endpoint == 'main.achievements' %}active{% endif %}">Достижения</a>
 
         {% if is_admin %}
-          <a href="{{ url_for('admin.index') }}" class="nav-link nav-admin-link {% if request.path.startswith('/admin') %}active{% endif %}">Админка</a>
-          <a href="{{ url_for('admin.logout') }}" class="nav-link nav-logout">Выйти</a>
+          <a href="#" class="nav-link nav-admin-link {% if request.path.startswith('/admin') %}active{% endif %}">Админка</a>
+          <a href="#" class="nav-link nav-logout">Выйти</a>
         {% else %}
-          <a href="{{ url_for('admin.login') }}" class="nav-link nav-login-link">Вход</a>
+          <a href="#" class="nav-link nav-login-link">Вход</a>
         {% endif %}
       </nav>
     </div>
@@ -61,10 +61,10 @@
       <div class="footer-right">
         {% if is_admin %}
           <span class="footer-status">Режим администратора</span>
-          <a href="{{ url_for('admin.index') }}" class="footer-link">Управление</a>
-          <a href="{{ url_for('admin.logout') }}" class="footer-link">Выход</a>
+          <a href="#" class="footer-link">Управление</a>
+          <a href="#" class="footer-link">Выход</a>
         {% else %}
-          <a href="{{ url_for('admin.login') }}" class="footer-link">Панель управления</a>
+          <a href="#" class="footer-link">Панель управления</a>
         {% endif %}
         <span class="footer-year">© {{ current_year }}</span>
       </div>
