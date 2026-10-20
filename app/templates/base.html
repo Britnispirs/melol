@@ -20,12 +20,11 @@
         <a href="{{ url_for('main.diary') }}" class="nav-link {% if request.endpoint in ['main.diary', 'main.post'] and not request.path.startswith('/admin') %}active{% endif %}">Дневник</a>
         <a href="{{ url_for('main.resume') }}" class="nav-link {% if request.endpoint == 'main.resume' %}active{% endif %}">Резюме</a>
         <a href="{{ url_for('main.achievements') }}" class="nav-link {% if request.endpoint == 'main.achievements' %}active{% endif %}">Достижения</a>
-
-        {% if is_admin %}
-          <a href="#" class="nav-link nav-admin-link {% if request.path.startswith('/admin') %}active{% endif %}">Админка</a>
-          <a href="#" class="nav-link nav-logout">Выйти</a>
+        {% if session.get('is_admin') %}
+          <a href="{{ url_for('admin.index') }}" class="nav-link nav-admin-link">Админка</a>
+          <a href="{{ url_for('admin.logout') }}" class="nav-link nav-logout">Выйти</a>
         {% else %}
-          <a href="#" class="nav-link nav-login-link">Вход</a>
+          <a href="{{ url_for('admin.login') }}" class="nav-link nav-login-link">Вход</a>
         {% endif %}
       </nav>
     </div>
@@ -59,12 +58,12 @@
         <p class="footer-subtitle">Бахонин Григорий · Инженерный дневник & портфолио</p>
       </div>
       <div class="footer-right">
-        {% if is_admin %}
+        {% if session.get('is_admin') %}
           <span class="footer-status">Режим администратора</span>
-          <a href="#" class="footer-link">Управление</a>
-          <a href="#" class="footer-link">Выход</a>
+          <a href="{{ url_for('admin.index') }}" class="footer-link">Управление</a>
+          <a href="{{ url_for('admin.logout') }}" class="footer-link">Выход</a>
         {% else %}
-          <a href="#" class="footer-link">Панель управления</a>
+          <a href="{{ url_for('admin.login') }}" class="footer-link">Панель управления</a>
         {% endif %}
         <span class="footer-year">© {{ current_year }}</span>
       </div>
