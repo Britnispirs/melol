@@ -186,7 +186,7 @@ def delete_post_route(slug):
 @admin.route("/api/preview", methods=["POST"])
 @admin_required
 def api_preview():
-    data = request.get_json(silent=True) or request.form
+    data = request.get_json(silent=Tr   ue) or request.form
     text = data.get("markdown", "")
     html = render_markdown(text)
     return jsonify({"html": html})

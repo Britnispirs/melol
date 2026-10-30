@@ -1,9 +1,10 @@
 import os
 import sys
 import logging
-from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, abort
+from flask import Flask, Blueprint, render_template, request, abort
 from pythonjsonlogger import jsonlogger
 from app.posts_manager import get_posts, get_post_by_slug
+from app.admin import admin as admin_blueprint
 
 # 1. Фильтр для сквозного Request-ID
 class RequestIDFilter(logging.Filter):
@@ -61,41 +62,15 @@ def achievements():
 def health():
     return {"status": "ok"}, 200
 
-# 4. Блюпринт админки (admin)
-admin = Blueprint("admin", __name__, url_prefix="/admin")
-
-@admin.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        logger.info("Admin login attempt")
-        session["is_admin"] = True
-        return redirect(url_for("admin.index"))
-    
-    try:
-        return render_template("admin/login.html")
-    except Exception:
-        return "<h1>Admin Login Page</h1><form method='post'><button type='submit'>Войти</button></form>"
-
-@admin.route("/")
-def index():
-    logger.info("Admin dashboard accessed")
-    return "<h1>Admin Dashboard</h1><p><a href='/admin/logout'>Выйти</a></p>"
-
-@admin.route("/logout")
-def logout():
-    session.pop("is_admin", None)
-    logger.info("Admin logged out")
-    return redirect(url_for("main.index"))
-
-# 5. Фабрика приложения
+# 4. Фабрика приложения
 def create_app():
     setup_logging()
     app = Flask(__name__)
     
     app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
 
-    # Регистрируем оба чертежа
+    # Регистрируем основной сайт и полноценную админку
     app.register_blueprint(main)
-    app.register_blueprint(admin)
+    app.register_blueprint(admin_blueprint)
     
     return app
