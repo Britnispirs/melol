@@ -2,7 +2,7 @@ auth_enabled: false
 
 server:
   http_listen_port: 3100
-  grpc_listen_porn: 9096
+  grpc_listen_port: 9096
 
 common:
   instance_addr: 127.0.0.1
@@ -11,10 +11,11 @@ common:
     filesystem:
       chunks_directory: /tmp/loki/chunks
       rules_directory: /tmp/loki/rules
-    replication_factor: 1
-    ring:
-      kvstore:
-        store: inmemory
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
 schema_config:
   configs:
     - from: 2020-10-24
@@ -27,5 +28,3 @@ schema_config:
 
 ruler:
   alertmanager_url: http://localhost:9093
-
-Й
