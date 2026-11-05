@@ -1,4 +1,3 @@
-# --- builder ---
 FROM python:3.12-slim AS builder
 
 WORKDIR /app
@@ -9,7 +8,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 COPY requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-# --- runtime ---
 FROM python:3.12-slim
 
 WORKDIR /app
@@ -17,14 +15,11 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-# Копируем установленные пакеты из builder
 COPY --from=builder /install /usr/local
 
-# Копируем код приложения
 COPY wsgi.py .
 COPY app/ ./app/
 
-# Непривилегированный пользователь
 RUN useradd --create-home --shell /bin/bash appuser && \
     chown -R appuser:appuser /app
 USER appuser

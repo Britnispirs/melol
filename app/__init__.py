@@ -69,6 +69,20 @@ def create_app():
     
     app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
 
+    @app.after_request
+    def log_response(response):
+        if request.path != "/health":
+            logger.info(
+                "Request handled",
+                extra={
+                    "method": request.method,
+                    "path": request.path,
+                    "status_code": response.status_code,
+                    "remote_addr": request.headers.get("X-Real-IP", request.remote_addr),
+                }
+            )
+        return response
+
     # Регистрируем основной сайт и полноценную админку
     app.register_blueprint(main)
     app.register_blueprint(admin_blueprint)

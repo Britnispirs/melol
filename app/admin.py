@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, abort, jsonify
 from functools import wraps
 from datetime import datetime
+import logging
 import os
 from app.posts_manager import (
     get_posts,
@@ -11,14 +12,15 @@ from app.posts_manager import (
     slugify
 )
 
+logger = logging.getLogger(__name__)
+
 admin = Blueprint("admin", __name__, url_prefix="/admin")
 
-# Пароль администратора, по умолчанию Yanedaun2008 (можно переопределить через переменную окружения)
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "Yanedaun2008")
 
 
 def admin_required(f):
-    @wraps(f)
+    @wraps(f)   
     def decorated_function(*args, **kwargs):
         if not session.get("is_admin"):
             flash("Требуется вход администратора.", "warning")
@@ -34,9 +36,11 @@ def login():
 
     if request.method == "POST":
         password = request.form.get("password", "")
+        remote_ip = request.headers.get("X-Real-IP", request.remote_addr)
         if password == ADMIN_PASSWORD:
             session["is_admin"] = True
             session.permanent = True
+            logger.info("Admin login success", extra={"remote_addr": remote_ip})
             flash("Успешный вход в панель администратора!", "success")
             next_url = request.args.get("next")
             # Простая защита от open redirect
@@ -44,6 +48,7 @@ def login():
                 return redirect(next_url)
             return redirect(url_for("admin.index"))
         else:
+            logger.warning("Admin login failed: invalid password", extra={"remote_addr": remote_ip})
             flash("Неверный пароль администратора. Попробуйте еще раз.", "error")
 
     return render_template("admin/login.html")
@@ -52,6 +57,7 @@ def login():
 @admin.route("/logout")
 def logout():
     session.pop("is_admin", None)
+    logger.info("Admin logout", extra={"remote_addr": request.headers.get("X-Real-IP", request.remote_addr)})
     flash("Вы вышли из панели администратора.", "info")
     return redirect(url_for("main.index"))
 
