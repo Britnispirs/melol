@@ -14,5 +14,5 @@ datasources:
           matcherRegex: '(?:"request_id":\s*"|request_id=)([a-f0-9]+)'
           name: RequestID
           url: '$$(__value,raw)'
-          urDisplayLabel: 'Trace Request ID''
+          urDisplayLabel: 'Trace Request ID'
 
